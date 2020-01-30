@@ -1,6 +1,6 @@
 # Architect
 
-Automated Debian package building for git repos built to solve
+Automated Debian package building from git repos built to solve
 the issue of "I have a yaml file full of git repos; Turn them into debs plz".
 
 # Usage
