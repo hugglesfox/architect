@@ -10,3 +10,9 @@ url = "https://github.com/user/repo.git"
 
 # Tag to build
 tag = "1.0.0"
+
+# Another package for good measure
+[[package]]
+name = "test2"
+url = "https://gitlab.com/user/test.git"
+tag = "v2"
