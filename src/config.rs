@@ -6,16 +6,16 @@ use std::path::PathBuf;
 use std::process::Command;
 
 #[derive(Deserialize)]
-pub struct Repo {
+pub struct Package {
     name: String,
     url: String,
     tag: String,
 }
 
-impl Repo {
+impl Package {
     /// Clones the repo to the path `$repo_dir/$name`. If a git repository already exists at that
     /// path, that is used.
-    pub fn repo_clone(&self, dest: &str) -> PathBuf {
+    pub fn clone_repo(&self, dest: &str) -> PathBuf {
         // Clone/initalise
         let path = Path::new(dest).join(self.name.as_str());
         let _repo = match Repository::clone(self.url.as_str(), &path) {
@@ -62,32 +62,32 @@ impl Repo {
 #[derive(Deserialize)]
 pub struct Config {
     repo_dir: String,
-    #[serde(rename = "repo")]
-    repos: Vec<Repo>,
+    #[serde(rename = "package")]
+    packages: Vec<Package>,
 }
 
 impl Config {
-    pub fn get_repo(&self, name: &str) -> Result<&Repo, &'static str> {
-        for repo in self.repos.iter() {
-            if repo.name == name {
-                return Ok(repo);
+    pub fn get_package(&self, name: &str) -> Result<&Package, &'static str> {
+        for package in self.packages.iter() {
+            if package.name == name {
+                return Ok(package);
             }
         }
 
-        Err("Unable to find repo")
+        Err("Unable to find package")
     }
 
-    pub fn build(&self, repo: &Repo) {
-        let dest = repo.repo_clone(self.repo_dir.as_str());
+    pub fn build(&self, package: &Package) {
+        let dest = package.clone_repo(self.repo_dir.as_str());
 
         mk_deps(dest.as_path()).expect("mk-build-deps returned non 0 exit code");
         debuild(dest.as_path()).expect("debuild returned non 0 exit code");
-        clean_deps(repo.name.as_str()).expect("apt returned non 0 exit code");
+        clean_deps(package.name.as_str()).expect("apt returned non 0 exit code");
     }
 
     pub fn build_all(&self) {
-        for repo in self.repos.iter() {
-            self.build(repo);
+        for package in self.packages.iter() {
+            self.build(package);
         }
     }
 }

@@ -22,9 +22,9 @@ fn main() {
                 .takes_value(true),
         )
         .arg(
-            Arg::with_name("repo")
-                .help("Specifies a repo name to build (defaults to building all)")
-                .short("r")
+            Arg::with_name("package")
+                .help("Specifies a package name to build (defaults to building all)")
+                .short("p")
                 .takes_value(true),
         )
         .get_matches();
@@ -36,8 +36,8 @@ fn main() {
     )
     .expect("Unable to parse config");
 
-    if let Some(repo) = matches.value_of("repo") {
-        config.build(config.get_repo(repo).expect("Repo doesn't exist"));
+    if let Some(package) = matches.value_of("package") {
+        config.build(config.get_package(package).expect("Package doesn't exist"));
     } else {
         config.build_all();
     }

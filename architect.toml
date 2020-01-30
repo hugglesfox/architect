@@ -1,7 +1,7 @@
 # Where to clone the repos to
 repo_dir = ""
 
-[[repo]]
+[[package]]
 # Package name (Must match the package name found in debian/control)
 name = "test"
 

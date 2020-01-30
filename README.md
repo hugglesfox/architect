@@ -13,5 +13,5 @@ FLAGS:
 
 OPTIONS:
     -c <config>        Specifies config file (defaults to "architect.toml")
-    -r <repo>          Specifies a repo name to build (defaults to building all)
+    -p <package>          Specifies a package name to build (defaults to building all)
 ```
