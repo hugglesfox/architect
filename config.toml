@@ -1,0 +1,6 @@
+repo_dir = "/home/hayden/test"
+
+[[repo]]
+name = "pop-session"
+url = "https://github.com/pop-os/session.git"
+tag = "3.0.1"
