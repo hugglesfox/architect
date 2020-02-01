@@ -1,5 +1,6 @@
 use crate::utils;
-use apt_cache::apt::AptError;
+use apt_cache::apt::apt_cache;
+use apt_cache::apt::parser::{depends, recommends};
 use apt_cache::Package;
 use glob::glob;
 use serde::Deserialize;
@@ -22,9 +23,6 @@ impl PackageConfig {
             build_recommends: Some(build_depends),
             build_depends: Some(build_recommends),
         }
-    }
-    pub fn as_package(&self) -> Result<Package, AptError> {
-        Package::new(&self.name)
     }
 
     pub fn install(&self) -> bool {
@@ -89,11 +87,11 @@ impl Config {
     }
 
     pub fn build_package_depends(&self, pkg: &PackageConfig) {
-        if let Some(depends) = pkg.as_package().expect("Package not in repos").depends() {
+        if let Some(depends) = apt_cache("depends", pkg.name.as_str(), &depends) {
             for package in depends {
-                if Package::new(&package.name).is_err() {
+                if Package::new(&package).is_err() {
                     self.build(&PackageConfig::new(
-                        package.name.as_str(),
+                        package.as_str(),
                         pkg.install(),
                         pkg.build_depends(),
                         pkg.build_recommends(),
@@ -104,11 +102,11 @@ impl Config {
     }
 
     pub fn build_package_recommends(&self, pkg: &PackageConfig) {
-        if let Some(recommends) = pkg.as_package().expect("Package not in repos").recommends() {
+        if let Some(recommends) = apt_cache("depends", pkg.name.as_str(), &recommends) {
             for package in recommends {
-                if Package::new(&package.name).is_err() {
+                if Package::new(&package).is_err() {
                     self.build(&PackageConfig::new(
-                        package.name.as_str(),
+                        package.as_str(),
                         pkg.install(),
                         pkg.build_depends(),
                         pkg.build_recommends(),
