@@ -1,7 +1,7 @@
 extern crate clap;
-extern crate git2;
 extern crate serde;
 extern crate toml;
+extern crate apt_cache;
 
 mod config;
 mod utils;
@@ -11,9 +11,9 @@ use clap::{App, Arg};
 use std::fs;
 
 fn main() {
-    let matches = App::new("architect")
-        .version("0.1.0")
-        .about("Automated debian package building")
+    let matches = App::new("backstab")
+        .version("0.2.0")
+        .about("Automated Debian package porting from ppa repos")
         .author("Hayden Hughes <hayden@firemail.cc>")
         .arg(
             Arg::with_name("config")
@@ -30,7 +30,7 @@ fn main() {
         .get_matches();
 
     let config: Config = toml::from_str(
-        fs::read_to_string(matches.value_of("config").unwrap_or("architect.toml"))
+        fs::read_to_string(matches.value_of("config").unwrap_or("backstab.toml"))
             .expect("Unable to read config")
             .as_str(),
     )

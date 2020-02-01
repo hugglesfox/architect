@@ -1,0 +1,16 @@
+# Directory to download and build stuff in. Also where the built debs are.
+build_dir = "/tmp/backstab"
+
+[[package]]
+# Package name
+name = "test"
+
+# Optional: Build deps which are not available from binary repos
+build_deps = true
+
+# Optional: Build reccomends which are not avaible from binary repos
+build_recommends = true
+
+# Another package for good measure
+[[package]]
+name = "test2"
