@@ -5,10 +5,17 @@ build_dir = "/tmp/backstab"
 # Package name
 name = "test"
 
+# Optional: Install the package after building.
+# Requires running backstab as root
+# Required for build_deps and build_recommends
+install = true
+
 # Optional: Build deps which are not available from binary repos
+# (Default: false)
 build_deps = true
 
 # Optional: Build reccomends which are not avaible from binary repos
+# (Default: false)
 build_recommends = true
 
 # Another package for good measure

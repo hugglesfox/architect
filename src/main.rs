@@ -1,7 +1,7 @@
+extern crate apt_cache;
 extern crate clap;
 extern crate serde;
 extern crate toml;
-extern crate apt_cache;
 
 mod config;
 mod utils;
@@ -37,7 +37,11 @@ fn main() {
     .expect("Unable to parse config");
 
     if let Some(package) = matches.value_of("package") {
-        config.build(config.get_package(package).expect("Package doesn't exist"));
+        config.build(
+            &config
+                .get_package(package)
+                .expect("Package doesn't exist in config"),
+        );
     } else {
         config.build_all();
     }
